@@ -11,7 +11,13 @@ makeLabels <- function(hdim, dir, sheetName, defaultYear=2015, repID=1) {
 #     db <- read.csv(paste(dir, 'event_table.csv', sep='/'), as.is=TRUE)
     
     ## subset database to only desired HDIM numbers
-    hdim <- rep(hdim, each=repID)
+    badHDIM <- hdim[!(hdim %in% db$HDIM)]
+    
+    if(length(repID) == 1) {
+        repID <- rep(repID, length(hdim))
+    }
+
+    hdim <- rep(hdim[!(hdim %in% badHDIM)], repID[!(hdim %in% badHDIM)])
     db <- db[match(hdim, db$HDIM), ]
     
     ## allow makeOneLabel function to see objects from local environment
@@ -29,7 +35,7 @@ makeLabels <- function(hdim, dir, sheetName, defaultYear=2015, repID=1) {
         out[i] <- this.label
     }
     
-    out <- c('\\documentclass[6pt]{article}',
+    out <- c('\\documentclass[2pt]{extarticle}',
              '\\usepackage[margin=0.25in]{geometry}',
              '\\geometry{letterpaper}',
              '\\usepackage{graphicx}',
@@ -40,12 +46,16 @@ makeLabels <- function(hdim, dir, sheetName, defaultYear=2015, repID=1) {
              '\n',
              '\\begin{document}',
              '\\noindent', 
+             '\\raggedright',
              out,
              '\\end{document}')
     
     writeLines(out, paste(dir, '/', sheetName, '.tex', sep=''))
     system(sprintf('%s %s/%s.tex', system('which pdflatex', intern=TRUE), dir, sheetName))
     system(sprintf('rm %s/%s.aux %s/%s.log', dir, sheetName, dir, sheetName))
+
+    if(length(badHDIM) > 0) warning('missing HDIMs:', paste(badHDIM, collapse=', '))
+    invisible(badHDIM)
 }
 
 makeOneLabel <- function(x) {
@@ -85,7 +95,7 @@ makeOneLabel <- function(x) {
                           sep='-')
         }
         
-        paste('\\parbox{0.135\\textwidth}{\\tiny ',
+        paste('\\parbox{0.17\\textwidth}{\\tiny ',
               paste('HDIM', HDIM, sep=''), '; ', gsub('_', '\\\\_', Plot), '\\\\ ',
               Method, ' ', ifelse(is.na(Plant), '', Plant), ' ', BeatingDuration, '\\\\ ',
               TimeBegin, endt, '; ', date, '\\\\ ',
@@ -97,4 +107,6 @@ makeOneLabel <- function(x) {
 }
 
 
-makeLabels(4242:4252, '~/Dropbox/hawaiiDimensions/labels', 'stub3', repID=2)
+makeLabels(c(5473, 5330, 5158, 5506, 5481, 10039, 6299, 6310, 5509), 
+           '~/Dropbox/hawaiiDimensions/labels', 'labels_2016-02-09', 
+           repID=2)
