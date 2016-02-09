@@ -1,3 +1,5 @@
+library(tools)
+
 ## main function takes vector of HDIM numbers and directory of DB
 
 ## helper functions need to pull info from database and organize that into a label
@@ -40,9 +42,10 @@ makeLabels <- function(hdim, dir, sheetName, defaultYear=2015, repID=1) {
              '\\end{document}')
     
     writeLines(out, paste(dir, '/', sheetName, '.tex', sep=''))
+    browser()
+    system('cd ~/Dropbox/hawaiiDimensions/labels\n/usr/local/texlive/2014/bin/universal-darwin/pdflatex stub3.tex')
+    # tools::texi2pdf(sprintf('%s/%s.tex', dir, sheetName), clean=TRUE)
     
-    system(sprintf('cd %s', dir))
-    system(sprintf('pdflatex %s.tex', sheetName))
 }
 
 makeOneLabel <- function(x) {
@@ -94,4 +97,4 @@ makeOneLabel <- function(x) {
 }
 
 
-makeLabels(5143:5155, '~/Dropbox/Dimensions\\ Stuff/db', 'stub3', repID=2)
+makeLabels(5143:5155, '~/Dropbox/hawaiiDimensions/labels', 'stub3', repID=2)
