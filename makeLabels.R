@@ -6,15 +6,17 @@ library(tools)
 
 makeLabels <- function(hdim, dir, sheetName, defaultYear=2015, repID=1) {
     ## load data base
-    db <- read.csv(paste(dir, 'event_table.csv', sep='/'), as.is=TRUE)
+    db <- RCurl::getURL('https://docs.google.com/spreadsheets/d/1Ve2NZwNuGMteQDOoewitaANfTDXLy8StoHOPv7uGmTM/pub?output=csv')
+    db <- read.csv(textConnection(db), as.is=TRUE)
+#     db <- read.csv(paste(dir, 'event_table.csv', sep='/'), as.is=TRUE)
     
     ## subset database to only desired HDIM numbers
     hdim <- rep(hdim, each=repID)
-    db <- db[match(paste('HDIM', hdim, sep=''), db$HDIM), ]
+    db <- db[match(hdim, db$HDIM), ]
     
     ## allow makeOneLabel function to see objects from local environment
     environment(makeOneLabel) <- environment()
-    # browser()
+    
     ## loop over db and make labels
     out <- character(nrow(db))
     for(i in 1:nrow(db)) {
@@ -51,7 +53,7 @@ makeOneLabel <- function(x) {
                'sep', 'oct', 'nov', 'dec')
     
     with(x, {
-        coll <- c(Collector, Collector2)
+        coll <- Collector
         coll <- coll[!(is.na(coll) | coll == '')]
         if(length(coll) < 1) {
         	coll <- '\\rule{0ex}{0ex}\\hspace{6em}'
@@ -63,20 +65,20 @@ makeOneLabel <- function(x) {
         	# coll <- paste(coll, collapse=', ')
         # }
 
-        if(grepl('beat', method) & !(is.na(startTime) | startTime == '')) {
-            endt <- paste('--', endTime, sep='')
+        if(grepl('beat', Method, ignore.case=TRUE) & !(is.na(TimeBegin) | TimeBegin == '')) {
+            endt <- paste('--', TimeEnd, sep='')
         } else {
             endt <- ''
         }
         
-        if(is.na(startTime) | startTime == '') {
-            startTime <- '\\rule{0ex}{0ex}\\hspace{4.5em}'
+        if(is.na(TimeBegin) | TimeBegin == '') {
+            TimeBegin <- '\\rule{0ex}{0ex}\\hspace{4.5em}'
         }
         
-        if(is.na(date) | date == '') {
+        if(is.na(Date) | Date == '') {
         	date <- defaultYear
         } else {
-            d <- strsplit(date, '/')[[1]]
+            d <- strsplit(Date, '/')[[1]]
             date <- paste(ifelse(nchar(d[3]) == 2, paste('20', d[3], sep=''), d[3]), 
                           month[as.numeric(d[1])], 
                           d[2], 
@@ -84,9 +86,9 @@ makeOneLabel <- function(x) {
         }
         
         paste('\\parbox{0.135\\textwidth}{\\tiny ',
-              HDIM, '; ', gsub('_', '\\\\_', siteKey), '\\\\ ',
-              method, ' ', ifelse(is.na(vegetation), '', vegetation), ' ', duration, '\\\\ ',
-              startTime, endt, '; ', date, '\\\\ ',
+              paste('HDIM', HDIM, sep=''), '; ', gsub('_', '\\\\_', Plot), '\\\\ ',
+              Method, ' ', ifelse(is.na(Plant), '', Plant), ' ', BeatingDuration, '\\\\ ',
+              TimeBegin, endt, '; ', date, '\\\\ ',
               paste(coll, collapse=', '), ifelse(length(coll) > 1, ' colls.', ' coll.'), 
               '}',
               sep='')
@@ -95,4 +97,4 @@ makeOneLabel <- function(x) {
 }
 
 
-makeLabels(5143:5155, '~/Dropbox/hawaiiDimensions/labels', 'stub3', repID=2)
+makeLabels(4242:4252, '~/Dropbox/hawaiiDimensions/labels', 'stub3', repID=2)
