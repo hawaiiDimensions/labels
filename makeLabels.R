@@ -1,5 +1,3 @@
-library(tools)
-
 ## main function takes vector of HDIM numbers and directory of DB
 
 ## helper functions need to pull info from database and organize that into a label
@@ -28,7 +26,7 @@ makeLabels <- function(hdim, dir, sheetName, defaultYear=2015, repID=1) {
     for(i in 1:nrow(db)) {
         this.label <- makeOneLabel(db[i, ])
         
-        if(i %% 7 == 0 & i != nrow(db)) {
+        if(i %% 6 == 0 & i != nrow(db)) {
         	this.label <- paste(this.label, '\\\\ \n\\vspace{0.001in} \n\n\\noindent')
         }
         
@@ -36,7 +34,7 @@ makeLabels <- function(hdim, dir, sheetName, defaultYear=2015, repID=1) {
     }
     
     out <- c('\\documentclass[2pt]{extarticle}',
-             '\\usepackage[margin=0.25in]{geometry}',
+             '\\usepackage[margin=0.5in]{geometry}',
              '\\geometry{letterpaper}',
              '\\usepackage{graphicx}',
              '\\usepackage{setspace}',
@@ -81,9 +79,9 @@ makeOneLabel <- function(x) {
             endt <- ''
         }
         
-        if(is.na(TimeBegin) | TimeBegin == '') {
-            TimeBegin <- '\\rule{0ex}{0ex}\\hspace{4.5em}'
-        }
+#         if(is.na(TimeBegin) | TimeBegin == '') {
+#             TimeBegin <- '\\rule{0ex}{0ex}\\hspace{4.5em}'
+#         }
         
         if(is.na(Date) | Date == '') {
         	date <- defaultYear
@@ -94,12 +92,19 @@ makeOneLabel <- function(x) {
                           d[2], 
                           sep='-')
         }
+
+        if(is.na(BeatingDuration) | BeatingDuration == '') {
+            BeatingDuration <- ''
+        } else {
+            BeatingDuration <- paste(BeatingDuration, ' ', sep='')
+        }
         
-        paste('\\parbox{0.17\\textwidth}{\\tiny ',
+        paste('\\parbox{0.16\\textwidth}{\\tiny ', '\\raggedright ', '\\rule[-0.3\\baselineskip]{0pt}{10pt}',
               paste('HDIM', HDIM, sep=''), '; ', gsub('_', '\\\\_', Plot), '\\\\ ',
-              Method, ' ', ifelse(is.na(Plant), '', Plant), ' ', BeatingDuration, '\\\\ ',
+              Method, ifelse(is.na(Plant), '', paste(' ', Plant, sep='')), ' ', BeatingDuration, # '\\\\ ',
               TimeBegin, endt, '; ', date, '\\\\ ',
               paste(coll, collapse=', '), ifelse(length(coll) > 1, ' colls.', ' coll.'), 
+              # 
               '}',
               sep='')
     })
@@ -109,4 +114,4 @@ makeOneLabel <- function(x) {
 
 makeLabels(c(5473, 5330, 5158, 5506, 5481, 10039, 6299, 6310, 5509), 
            '~/Dropbox/hawaiiDimensions/labels', 'labels_2016-02-09', 
-           repID=2)
+           repID=c(26, 18, 12, 10, 9, 9, 18, 16, 1))
