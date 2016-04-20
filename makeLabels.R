@@ -110,8 +110,3 @@ makeOneLabel <- function(x) {
     })
 
 }
-
-
-makeLabels(c(5473, 5330, 5158, 5506, 5481, 10039, 6299, 6310, 5509), 
-           '~/Dropbox/hawaiiDimensions/labels', 'labels_2016-02-09', 
-           repID=c(26, 18, 12, 10, 9, 9, 18, 16, 1))
