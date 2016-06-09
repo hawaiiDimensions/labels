@@ -19,8 +19,8 @@ source('~/Dropbox/hawaiidimensions/labels/makeLabels.R')
 # makeLabels(hdimRound2, '~/Dropbox/hawaiiDimensions/labels', 'labels_round2', repID=18)
 
 ## make some specific labels
-these.hdim <- c(8007, 8005, 8006, 6226, 8000, 8001, 8002, 8003, 8004, 8008, 8009, 6239:6244)
-these.num <- c(16, 11, 15, rep(18, 14))
+these.hdim <- c(8007, 8005, 8006, 6225, 6226, 8000, 8001, 8002, 8003, 8004, 8008, 8009, 6239:6244)
+these.num <- c(16, 11, 15, rep(18, 15))
 makeLabels(these.hdim, 
            '~/Dropbox/hawaiiDimensions/labels', 'labels_2016-06-10', 
            repID=these.num)
