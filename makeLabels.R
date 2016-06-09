@@ -34,7 +34,7 @@ makeLabels <- function(hdim, dir, sheetName, defaultYear=2015, repID=1) {
     }
     
     out <- c('\\documentclass[2pt]{extarticle}',
-             '\\usepackage[margin=0.25in]{geometry}',
+             '\\usepackage[margin=0.5in]{geometry}',
              '\\geometry{letterpaper}',
              '\\usepackage{graphicx}',
              '\\usepackage{setspace}',
