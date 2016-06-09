@@ -96,12 +96,12 @@ makeOneLabel <- function(x) {
         if(is.na(BeatingDuration) | BeatingDuration == '') {
             BeatingDuration <- ''
         } else {
-            BeatingDuration <- paste(BeatingDuration, ' ', sep='')
+            BeatingDuration <- paste(' ', BeatingDuration, ' sec. ', sep='')
         }
         
         paste('\\parbox{0.16\\textwidth}{\\tiny ', '\\raggedright ', '\\rule[-0.3\\baselineskip]{0pt}{10pt}',
               paste('HDIM', HDIM, sep=''), '; ', gsub('_', '\\\\_', Plot), '\\\\ ',
-              Method, ifelse(is.na(Plant), '', paste(' ', Plant, sep='')), ' ', BeatingDuration, # '\\\\ ',
+              Method, ifelse(is.na(Plant) | Plant=='', '', paste(' ', Plant, sep='')), BeatingDuration, # '\\\\ ',
               TimeBegin, endt, '; ', date, '\\\\ ',
               paste(coll, collapse=', '), ifelse(length(coll) > 1, ' colls.', ' coll.'), 
               # 
