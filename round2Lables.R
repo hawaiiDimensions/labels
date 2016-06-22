@@ -2,25 +2,11 @@
 
 source('~/Dropbox/hawaiidimensions/labels/makeLabels.R')
 
-## old call...reminder of general functionality
-# makeLabels(c(5473, 5330, 5158, 5506, 5481, 10039, 6299, 6310, 5509), 
-#            '~/Dropbox/hawaiiDimensions/labels', 'labels_2016-02-09', 
-#            repID=c(26, 18, 12, 10, 9, 9, 18, 16, 1))
-
-
-# # get copy of database and find round 2
-# db <- RCurl::getURL('https://docs.google.com/spreadsheets/d/1Ve2NZwNuGMteQDOoewitaANfTDXLy8StoHOPv7uGmTM/pub?output=csv')
-# db <- read.csv(textConnection(db), as.is=TRUE)
-# hdimRound2 <- db$HDIM[as.Date(db$Date, format='%m/%d/%Y') > as.Date('7/1/15', format='%m/%d/%Y')]
-# hdimRound2 <- hdimRound2[!is.na(hdimRound2)]
-
-
-# ## make labels for those hdim, 18 each
-# makeLabels(hdimRound2, '~/Dropbox/hawaiiDimensions/labels', 'labels_round2', repID=18)
-
 ## make some specific labels
-these.hdim <- c(8007, 8005, 8006, 6225, 6226, 8000, 8001, 8002, 8003, 8004, 8008, 8009, 6239:6244)
-these.num <- c(16, 11, 15, rep(18, 15))
+these.hdim <- c(5482, 8015, 8019, 12003, 6273, 6239, 6241, 4496, 4497, 4498, 4499, 4500, 
+                4501, 4502, 4503, 4504, 4505, 4506, 4507, 6265, 6266, 6267, 6268, 6269, 
+                6270, 6271, 6272, 6273)
+these.num <- c(4, 15, 14, 15, 13, 14, 5, rep(15, 21))
 makeLabels(these.hdim, 
-           '~/Dropbox/hawaiiDimensions/labels', 'labels_2016-06-10', 
+           '~/Dropbox/hawaiiDimensions/labels', sprintf('labels_%s', Sys.Date()), 
            repID=these.num)
