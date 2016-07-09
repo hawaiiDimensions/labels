@@ -38,7 +38,7 @@ these.hdim <- temp[order(temp$Plot), 'HDIM']
 these.hdim <- these.hdim[!(these.hdim %in% done)]
 
 ## make labels
-makeLabels(these.hdim, '~/Dropbox/hawaiiDimensions/labels', 'labels_special', repID=18)
+makeLabels(these.hdim, '~/Dropbox/hawaiiDimensions/labels', 'labels_remaining', repID=18)
 
 ## check on completeness
 
