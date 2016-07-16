@@ -36,6 +36,7 @@ all.these.hdim <- temp$HDIM
 temp <- temp[temp$Plot != 'laupLSAG_10', ]
 these.hdim <- temp[order(temp$Plot), 'HDIM']
 these.hdim <- these.hdim[!(these.hdim %in% done)]
+these.hdim <- c(these.hdim, 8575)
 
 ## make labels
 makeLabels(these.hdim, '~/Dropbox/hawaiiDimensions/labels', 'labels_remaining', repID=18)
